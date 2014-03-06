@@ -1,6 +1,7 @@
 module Chapter5.PrettyJSON (renderJValue) where
 
-import Chapter5.Prettify (Doc, (<>), text, double, char, hcat)
+import Chapter5.Prettify (Doc, (<>), char, double, fsep, hcat, punctuate, text,
+                          compact, pretty)
 import Chapter5.SimpleJSON (JValue(..))
 
 import Data.Bits (shiftR, (.&.))
@@ -13,6 +14,11 @@ renderJValue (JBool False) = text "false"
 renderJValue JNull         = text "null"
 renderJValue (JNumber num) = double num
 renderJValue (JString str) = string str
+renderJValue (JArray ary)  = series '[' ']' renderJValue ary
+renderJValue (JObject obj) = series '{' '}' field obj
+    where field (name,val) = string name <>
+                             text ": " <>
+                             renderJValue val
 
 string :: String -> Doc
 string = enclose '"' '"' . hcat . map oneChar
@@ -46,3 +52,7 @@ astral :: Int -> Doc
 astral n = smallHex (a + 0xd800) <> smallHex (b + 0xdc00)
     where a = (n `shiftR` 10) .&. 0x3ff
           b = n .&. 0x3ff
+
+series :: Char -> Char -> (a -> Doc) -> [a] -> Doc
+series open close item = enclose open close .
+                         fsep . punctuate (char ',') . map item
