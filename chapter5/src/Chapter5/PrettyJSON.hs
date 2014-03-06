@@ -1,7 +1,8 @@
 module Chapter5.PrettyJSON (renderJValue) where
 
-import Chapter5.Prettify (Doc, (<>), char, double, fsep, hcat, punctuate, text,
-                          compact, pretty)
+import Chapter5.Prettify ( Doc, (<>), char, double, fsep, hcat, punctuate, text
+                         -- , compact, pretty
+                         )
 import Chapter5.SimpleJSON (JValue(..))
 
 import Data.Bits (shiftR, (.&.))
