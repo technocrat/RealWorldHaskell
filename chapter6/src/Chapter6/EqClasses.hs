@@ -2,7 +2,7 @@
 
 module Chapter6.EqClasses where
 
-import Chapter6.NaiveEq
+import           Chapter6.NaiveEq
 
 class BasicEq a where
     isEqual :: a -> a -> Bool

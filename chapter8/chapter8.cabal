@@ -1,6 +1,6 @@
-name:                chapter6
+name:                chapter8
 version:             0.1.0.0
-synopsis:            Package for Chapter 6
+synopsis:            Package for Chapter 8
 -- description:
 -- license:
 -- license-file:        LICENSE
@@ -12,11 +12,11 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     Chapter6.JSONClass
-  other-modules:       Chapter6.EqClasses
-                       Chapter6.NaiveEq
-                       Chapter6.SimpleClass
-  build-depends:       base >=4.6
+  exposed-modules:     Chapter8.ElfMagic
+                       Chapter8.HighestClose
+  -- other-modules:
+  build-depends:       base >=4.6,
+                       bytestring
   hs-source-dirs:      src
   default-language:    Haskell2010
   ghc-options:         -Wall -O -fwarn-unused-do-bind -fwarn-incomplete-patterns
