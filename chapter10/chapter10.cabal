@@ -1,6 +1,6 @@
-name:                chapter9
+name:                chapter10
 version:             0.1.0.0
-synopsis:            Package for Chapter 9
+synopsis:            Package for Chapter 10
 -- description:
 -- license:
 -- license-file:        LICENSE
@@ -12,15 +12,12 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     Chapter9.ControlledVisit
-                       Chapter9.FoldDir
-                       Chapter9.RecursiveContents
-                       Chapter9.BetterPredicate
-                       Chapter9.SimpleFinder
+  exposed-modules:     Chapter10.Parse
+                       Chapter10.PNM
+  other-modules:       Chapter10.EitherIntFlexible
+                       Chapter10.TreeMap
   build-depends:       base >=4.6,
-                       directory >=1.2,
-                       filepath >=1.3,
-                       time >=1.4
+                       bytestring >=0.10
   hs-source-dirs:      src
   default-language:    Haskell2010
   ghc-options:         -Wall -O -fwarn-unused-do-bind -fwarn-incomplete-patterns
