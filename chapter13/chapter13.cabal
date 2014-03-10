@@ -13,9 +13,13 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Chapter13.BuildMap
+                       Chapter13.DList
                        Chapter13.FuncRec
                        Chapter13.FuncRec2
                        Chapter13.Lookup
+                       Chapter13.Monoid
+                       Chapter13.Num
+                       Chapter13.NumSimple
   build-depends:       base >=4.6,
                        containers >=0.5
   hs-source-dirs:      src
