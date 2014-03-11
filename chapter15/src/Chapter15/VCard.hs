@@ -13,7 +13,7 @@ albulena = [(Home, "+355-652-55512")]
 
 nils :: [(Context, Phone)]
 nils = [ (Mobile, "+47-922-55-512"), (Business, "+47-922-12-121")
-       , (Home, "+47-925-55-121"), (Business, "+47-922-25-551")]
+       , (Home, "+47-925-55-121"), (Business, "+47-922-25-551") ]
 
 twalumba :: [(Context, Phone)]
 twalumba = [(Business, "+260-02-55-5121")]
