@@ -5,7 +5,7 @@ module Chapter14.Logger
     , record
     ) where
 
-import Control.Monad (liftM, liftM2)
+import           Control.Monad (liftM, liftM2)
 
 newtype Logger a = Logger { execLogger :: (a, Log) }
 
@@ -15,6 +15,14 @@ runLogger :: Logger a -> (a, Log)
 runLogger = execLogger
 
 record :: String -> Logger ()
+record s = Logger ((), [s])
+
+instance Monad Logger where
+    return a = Logger (a, [])
+    m >>= k = let (a, w) = execLogger m
+                  n      = k a
+                  (b, x) = execLogger n
+              in Logger (b, w ++ x)
 
 globToRegex :: String -> Logger String
 globToRegex cs = globToRegex' cs >>= \ds ->
@@ -40,13 +48,14 @@ globToRegex' ('[':c:cs) =
     return $ "[" ++ c : ds
 globToRegex' ('[':_) =
     fail "unterminated character class"
-globToRegex (c:cs) = lifM2 (++) (escape c) (globToRegex' cs)
+globToRegex' (c:cs) = liftM2 (++) (escape c) (globToRegex' cs)
 
 escape :: Char -> Logger String
 escape c | c `elem` regexChars = record "escape" >> return ['\\',c]
          | otherwise           = return [c]
          where regexChars = "\\+()^$.{}]|"
 
+charClass_wordy :: String -> Logger String
 charClass_wordy (']':cs) =
     globToRegex' cs >>= \ds ->
     return $ ']':ds
@@ -54,5 +63,6 @@ charClass_wordy (c:cs) =
     charClass_wordy cs >>= \ds ->
     return $ c:ds
 
+charClass :: String -> Logger String
 charClass (']':cs) = (']':) `liftM` globToRegex' cs
 charClass (c:cs)   = (c:) `liftM` charClass cs
