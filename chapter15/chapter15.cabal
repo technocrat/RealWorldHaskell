@@ -12,14 +12,20 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     Chapter15.MovieReview
+  exposed-modules:     Chapter15.HandleIO
+                       Chapter15.MonadHandle
+                       Chapter15.MonadHandleIO
+                       Chapter15.MovieReview
                        Chapter15.RandomGolf
                        Chapter15.RandomSupply
+                       Chapter15.SafeHello
                        Chapter15.SupplyClass
                        Chapter15.SupplyInstance
                        Chapter15.VCard
+                       Chapter15.WriterIO
   other-modules:       Chapter15.Supply
   build-depends:       base >=4.6,
+                       directory >=1.2,
                        mtl >=2.1,
                        random >=1.0
   hs-source-dirs:      src

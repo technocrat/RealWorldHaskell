@@ -1,0 +1,34 @@
+name:                chapter16
+version:             0.1.0.0
+synopsis:            Package for Chapter 16
+-- description:
+-- license:
+-- license-file:        LICENSE
+author:              Chan Beom Park
+maintainer:          chanbeom.park@cern.ch
+-- copyright:
+-- category:
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  exposed-modules:     Chapter16.CSV1
+                       Chapter16.CSV2
+                       Chapter16.CSV5
+                       Chapter16.CSV6
+                       Chapter16.CSV7
+                       Chapter16.CSV8
+                       Chapter16.FormParse
+  build-depends:       base >=4.6,
+                       parsec >=3.1
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  ghc-options:         -Wall -O -fwarn-unused-do-bind -fwarn-incomplete-patterns
+
+executable csv9
+  main-is:             CSV9.hs
+  build-depends:       base >=4.6,
+                       parsec >=3.1
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  ghc-options:         -Wall -O -fwarn-unused-do-bind -fwarn-incomplete-patterns
