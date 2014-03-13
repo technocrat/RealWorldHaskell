@@ -13,9 +13,12 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Chapter15.MovieReview
+                       Chapter15.RandomGolf
                        Chapter15.RandomSupply
-                       Chapter15.Supply
+                       Chapter15.SupplyClass
+                       Chapter15.SupplyInstance
                        Chapter15.VCard
+  other-modules:       Chapter15.Supply
   build-depends:       base >=4.6,
                        mtl >=2.1,
                        random >=1.0
