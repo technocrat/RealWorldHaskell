@@ -19,6 +19,9 @@ library
                        Chapter16.CSV7
                        Chapter16.CSV8
                        Chapter16.FormParse
+                       Chapter16.HttpRequestParser
+                       Chapter16.JSONParser
+  other-modules:       Chapter16.JSONClass
   build-depends:       base >=4.6,
                        parsec >=3.1
   hs-source-dirs:      src
