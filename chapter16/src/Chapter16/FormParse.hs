@@ -8,7 +8,6 @@ import           Text.ParserCombinators.Parsec
 p_query :: CharParser () [(String, Maybe String)]
 p_query = p_pair `sepBy` char '&'
 
-
 p_pair :: CharParser () (String, Maybe String)
 p_pair = do
   name <- many1 p_char
