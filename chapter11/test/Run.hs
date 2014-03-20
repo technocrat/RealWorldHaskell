@@ -5,6 +5,7 @@ module Main where
 import           Chapter11.Prettify2
 
 import           Data.List             (intersperse)
+import           Data.Monoid           hiding ((<>))
 import           Test.Tasty
 import qualified Test.Tasty.QuickCheck as QC
 
@@ -12,10 +13,9 @@ main :: IO ()
 main = defaultMain allTests
 
 allTests :: TestTree
-allTests = testGroup "QuickCheck Tests" [
-             testGroup "simple" [ prop_empty_id, prop_char, prop_text
-                                , prop_line, prop_double
-                                ]
+allTests = testGroup "QuickCheck Tests"
+           [ testGroup "simple" [ prop_empty_id, prop_mempty_id, prop_char
+                                , prop_text, prop_line, prop_double ]
            , testGroup "complex" [ prop_hcat, prop_punctuate, prop_punctuate' ]
            ]
 
@@ -23,6 +23,11 @@ prop_empty_id :: TestTree
 prop_empty_id = testGroup "empty"
                 [ QC.testProperty "prop_empty_id" $
                   \(x :: Doc) -> empty <> x == x && x <> empty == x ]
+
+prop_mempty_id :: TestTree
+prop_mempty_id = testGroup "empty"
+                 [ QC.testProperty "prop_mempty_id" $
+                 \(x :: Doc) -> mempty `mappend` x == x && x `mappend` mempty == x ]
 
 prop_char :: TestTree
 prop_char = testGroup "char"

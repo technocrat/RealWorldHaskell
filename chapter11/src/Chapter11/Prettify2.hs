@@ -1,6 +1,7 @@
 module Chapter11.Prettify2 where
 
 import           Control.Monad   (liftM, liftM2)
+import           Data.Monoid     hiding ((<>))
 import           Test.QuickCheck
 
 data Doc = Empty
@@ -42,6 +43,10 @@ punctuate :: Doc -> [Doc] -> [Doc]
 punctuate _ []     = []
 punctuate _ [d]    = [d]
 punctuate p (d:ds) = (d <> p) : punctuate p ds
+
+instance Monoid Doc where
+    mempty = empty
+    mappend = (<>)
 
 {-
 instance Arbitrary Doc where
