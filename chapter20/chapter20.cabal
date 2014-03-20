@@ -13,7 +13,12 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Chapter20.PosixTime
+                       Chapter20.RunProcess
+                       Chapter20.RunProcessSimple
   build-depends:       base >=4.6,
+                       directory >=1.2,
+                       process >=1.1,
+                       regex-compat >=0.95,
                        time >=1.4,
                        unix >=2.6
   hs-source-dirs:      src

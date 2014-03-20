@@ -1,0 +1,33 @@
+name:                chapter11
+version:             0.1.0.0
+synopsis:            Package for Chapter 11
+-- description:
+-- license:
+-- license-file:        LICENSE
+author:              Chan Beom Park
+maintainer:          chanbeom.park@cern.ch
+-- copyright:
+-- category:
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  exposed-modules:     Chapter11.Arbitrary
+                       Chapter11.Prettify2
+                       Chapter11.QCBasics
+  build-depends:       base >=4.6,
+                       QuickCheck >=2.6
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  ghc-options:         -Wall -O -fwarn-unused-do-bind -fwarn-incomplete-patterns
+
+test-suite run
+  type:                exitcode-stdio-1.0
+  build-depends:       base >=4.6,
+                       tasty >=0.8,
+                       tasty-quickcheck >=0.8,
+                       chapter11
+  hs-source-dirs:      test
+  main-is:             Run.hs
+  default-language:    Haskell2010
+  ghc-options:         -Wall -rtsopts

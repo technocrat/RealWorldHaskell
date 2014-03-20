@@ -24,9 +24,9 @@ data Doc = Empty
            deriving (Show, Eq)
 
 (<>) :: Doc -> Doc -> Doc
-Empty <> y = y
-x <> Empty = x
-x <> y     = x `Concat` y
+Empty <> y     = y
+x     <> Empty = x
+x     <> y     = x `Concat` y
 
 empty :: Doc
 empty = Empty
