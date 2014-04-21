@@ -1,0 +1,21 @@
+name:                chapter21
+version:             0.1.0.0
+synopsis:            Package for Chapter 21
+-- description:
+-- license:
+-- license-file:        LICENSE
+author:              Chan Beom Park
+maintainer:          chanbeom.park@cern.ch
+-- copyright:
+-- category:
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  exposed-modules:     Chapter21.Query
+  build-depends:       base >=4.6,
+                       HDBC >=2.4,
+                       HDBC-sqlite3 >= 2.3
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  ghc-options:         -Wall -O -fwarn-unused-do-bind -fwarn-incomplete-patterns
