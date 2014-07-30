@@ -14,7 +14,5 @@ countEntriesTrad path = do
   rest <- forM contents $ \name -> do
                           let newName = path </> name
                           isDir <- doesDirectoryExist newName
-                          if isDir
-                          then countEntriesTrad newName
-                          else return []
+                          if isDir then countEntriesTrad newName else return []
   return $ (path, length contents) : concat rest

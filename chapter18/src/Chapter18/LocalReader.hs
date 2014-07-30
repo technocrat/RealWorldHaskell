@@ -1,10 +1,8 @@
-{-# LANGUAGE FlexibleContexts #-}
-
 module Chapter18.LocalReader where
 
-import           Control.Monad.Reader
+import           Control.Monad.Trans.Reader
 
-myName :: MonadReader String m => String -> m String
+myName :: String -> Reader String String
 myName step = do
   name <- ask
   return $ step ++ ", I am " ++ name

@@ -1,8 +1,12 @@
 module Chapter18.UglyStack where
 
 import           Chapter18.CountEntriesT
-import           Control.Monad.Reader
-import           Control.Monad.State
+
+import           Control.Monad              (forM, when)
+import           Control.Monad.IO.Class     (liftIO)
+import           Control.Monad.Trans.Class  (lift)
+import           Control.Monad.Trans.Reader
+import           Control.Monad.Trans.State
 import           System.Directory
 import           System.FilePath
 
@@ -19,22 +23,16 @@ runApp k maxDepth = let config = AppConfig maxDepth
 
 constrainedCount :: Int -> FilePath -> App [(FilePath, Int)]
 constrainedCount curDepth path = do
-  contents <- liftIO . listDirectory $ path
+  contents <- (liftIO . listDirectory) path
   cfg <- ask
   rest <- forM contents $ \name ->
           do let newPath = path </> name
-             isDir <- liftIO $ doesDirectoryExist newPath
+             isDir <- (liftIO . doesDirectoryExist) newPath
              if isDir && curDepth < cfgMaxDepth cfg
              then do let newDepth = curDepth + 1
-                     st <- get
+                     st <- lift get
                      when (stDeepestReached st < newDepth) $
-                          put st { stDeepestReached = newDepth }
+                       (lift . put) st { stDeepestReached = newDepth }
                      constrainedCount newDepth newPath
              else return []
   return $ (path, length contents) : concat rest
-
-implicitGet :: App AppState
-implicitGet = get
-
-explicitGet :: App AppState
-explicitGet = lift get

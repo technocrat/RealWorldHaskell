@@ -1,7 +1,8 @@
 module Chapter18.StackStack where
 
-import           Control.Monad.Reader
-import           Control.Monad.State
+import           Control.Monad.Trans.Class  (lift)
+import           Control.Monad.Trans.Reader
+import           Control.Monad.Trans.State
 
 type Foo = StateT Int (State String)
 
