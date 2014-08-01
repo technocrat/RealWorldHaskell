@@ -1,6 +1,6 @@
 module Chapter24.Sorting where
 
-import Control.Parallel (par, pseq)
+import           Control.Parallel (par, pseq)
 
 sort :: Ord a => [a] -> [a]
 sort (x:xs) = lesser ++ x:greater

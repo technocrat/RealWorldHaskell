@@ -1,5 +1,6 @@
 module Chapter24.NiceFork
-    ( ThreadManager
+    (
+      ThreadManager
     , newManager
     , forkManaged
     , getStatus
@@ -10,6 +11,7 @@ module Chapter24.NiceFork
 import           Control.Concurrent
 import           Control.Exception  (IOException, try)
 import           Control.Monad      (join)
+import           Data.Map           (Map)
 import qualified Data.Map           as M
 
 data ThreadStatus = Running
@@ -17,7 +19,7 @@ data ThreadStatus = Running
                   | Threw IOException -- killed by uncaught exception
                     deriving (Eq, Show)
 
-newtype ThreadManager = Mgr (MVar (M.Map ThreadId (MVar ThreadStatus)))
+newtype ThreadManager = Mgr (MVar (Map ThreadId (MVar ThreadStatus)))
     deriving Eq
 
 -- | Create a new thread manager.
@@ -29,9 +31,8 @@ forkManaged :: ThreadManager -> IO () -> IO ThreadId
 forkManaged (Mgr mgr) body =
     modifyMVar mgr $ \m -> do
       state <- newEmptyMVar
-      tid <- forkIO $ do
-               result <- try body
-               putMVar state (either Threw (const Finished) result)
+      tid <- forkIO $ do result <- try body
+                         putMVar state (either Threw (const Finished) result)
       return (M.insert tid state m, tid)
 
 -- | Immediately return the status of a managed thread.
@@ -56,11 +57,10 @@ waitFor (Mgr mgr) tid = do
     Nothing -> return Nothing
     Just st -> Just `fmap` takeMVar st
 -}
-waitFor (Mgr mgr) tid =
-    join . modifyMVar mgr $ \m -> return $
-    case M.updateLookupWithKey (\_ _ -> Nothing) tid m of
-                 (Nothing, _)  -> (m, return Nothing)
-                 (Just st, m') -> (m', Just `fmap` takeMVar st)
+waitFor (Mgr mgr) tid = join . modifyMVar mgr $ \m -> return $
+                        case M.updateLookupWithKey (\_ _ -> Nothing) tid m of
+                          (Nothing, _)  -> (m, return Nothing)
+                          (Just st, m') -> (m', Just `fmap` takeMVar st)
 
 -- | Block until all managed threads terminate.
 waitAll :: ThreadManager -> IO ()

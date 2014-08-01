@@ -4,7 +4,7 @@ module Main where
 
 import           Codec.Compression.GZip  (compress)
 import           Control.Concurrent      (forkIO)
-import           Control.Exception       (SomeException, handle)
+import           Control.Exception       (IOException, handle)
 import qualified Data.ByteString.Lazy    as L
 import           System.Console.Readline (readline)
 
@@ -15,7 +15,7 @@ main = do
     Nothing   -> return () -- user entered EOF
     Just ""   -> return () -- treat no name as "want to quit"
     Just name -> do
-         handle (\(e :: SomeException) -> print e) $ do
+         handle (\(e :: IOException) -> print e) $ do
                    content <- L.readFile name
                    forkIO (compressFile name content)
                    return ()

@@ -1,6 +1,6 @@
 module Chapter24.Chan where
 
-import Control.Concurrent
+import           Control.Concurrent
 
 chanExample :: IO ()
 chanExample = do

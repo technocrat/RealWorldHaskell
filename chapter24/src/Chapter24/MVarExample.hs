@@ -1,6 +1,6 @@
 module Chapter24.MVarExample where
 
-import Control.Concurrent
+import           Control.Concurrent
 
 communicate :: IO ()
 communicate = do
