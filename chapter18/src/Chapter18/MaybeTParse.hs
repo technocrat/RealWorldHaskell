@@ -14,7 +14,7 @@ data ParseState = ParseState { string :: ByteString
                              } deriving Show
 
 newtype Parse a = P { runP :: MaybeT (State ParseState) a }
-    deriving (Functor, Applicative, Monad)
+                deriving (Functor, Applicative, Monad)
 
 evalParse :: Parse a -> ByteString -> Maybe a
 evalParse m s = evalState ((runMaybeT . runP) m) (ParseState s 0)

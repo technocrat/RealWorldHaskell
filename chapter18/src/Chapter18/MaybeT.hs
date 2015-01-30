@@ -16,7 +16,8 @@ altBindMT :: Monad m => MaybeT m a -> (a -> MaybeT m b) -> MaybeT m b
 x `altBindMT` f = MaybeT $ runMaybeT x >>= maybe (return Nothing) (runMaybeT . f)
 
 returnMT :: Monad m => a -> MaybeT m a
-returnMT a = MaybeT $ return (Just a)
+-- returnMT a = MaybeT $ return (Just a)
+returnMT = MaybeT . return . Just
 
 failMT :: Monad m => t -> MaybeT m a
 failMT _ = MaybeT $ return Nothing
