@@ -9,9 +9,9 @@ data JValue = JString String
             | JNumber Double
             | JBool Bool
             | JNull
-            | JObject (JObj JValue) -- was [(String, JValue)]
-            | JArray (JAry JValue)  -- was [JValue]
-              deriving (Eq, Ord, Show)
+            | JObject (JObj JValue)  -- was [(String, JValue)]
+            | JArray (JAry JValue)   -- was [JValue]
+            deriving (Eq, Ord, Show)
 
 type JSONError = String
 
@@ -77,11 +77,11 @@ mapEithers f (x:xs) = case mapEithers f xs of
                                       Right y  -> Right (y:ys)
 mapEithers _ _      = Right []
 
-newtype JObj a = JObj { fromJObj :: [(String, a)]} deriving (Eq, Ord, Show)
+newtype JObj a = JObj { fromJObj :: [(String, a)] } deriving (Eq, Ord, Show)
 
 instance (JSON a) => JSON (JObj a) where
     toJValue = JObject . JObj . map (second toJValue) . fromJObj
 
     fromJValue (JObject (JObj o)) = whenRight JObj (mapEithers unwrap o)
-        where unwrap (k,v) = whenRight ((,) k) (fromJValue v)
+      where unwrap (k, v) = whenRight ((,) k) (fromJValue v)
     fromJValue _                  = Left "not a JSON object"

@@ -20,13 +20,13 @@ library
                        Chapter16.CSV8
                        Chapter16.FormParse
                        Chapter16.HttpRequestParser
-                       Chapter16.JSONParser
+                       Chapter16.JSONParsec
   other-modules:       Chapter16.JSONClass
   build-depends:       base >=4.6,
                        parsec >=3.1
   hs-source-dirs:      src
   default-language:    Haskell2010
-  ghc-options:         -Wall -O -fwarn-unused-do-bind -fwarn-incomplete-patterns
+  ghc-options:         -Wall -O2
 
 executable csv9
   main-is:             CSV9.hs
@@ -34,4 +34,4 @@ executable csv9
                        parsec >=3.1
   hs-source-dirs:      src
   default-language:    Haskell2010
-  ghc-options:         -Wall -O -fwarn-unused-do-bind -fwarn-incomplete-patterns
+  ghc-options:         -Wall -O2

@@ -5,44 +5,38 @@ import           Control.Monad                 (liftM2)
 import           Numeric                       (readHex)
 import           Text.ParserCombinators.Parsec
 
-p_query :: CharParser () [(String, Maybe String)]
-p_query = p_pair `sepBy` char '&'
+pQuery :: CharParser () [(String, Maybe String)]
+pQuery = pPair `sepBy` char '&'
 
-p_pair :: CharParser () (String, Maybe String)
-p_pair = do
-  name <- many1 p_char
-  value <- optionMaybe (char '=' >> many p_char)
-  return (name, value)
+pPair :: CharParser () (String, Maybe String)
+pPair = do name <- many1 pChar
+           value <- optionMaybe (char '=' >> many pChar)
+           return (name, value)
 
-p_pair_app1 :: CharParser () (String, Maybe String)
-p_pair_app1 = liftM2 (,) (many1 p_char) (optionMaybe (char '=' >> many p_char))
+pPairApp1 :: CharParser () (String, Maybe String)
+pPairApp1 = liftM2 (,) (many1 pChar) (optionMaybe (char '=' >> many pChar))
 
-a_pair :: CharParser () (String, Maybe String)
-a_pair = liftA2 (,) (many1 a_char) (optionMaybe (char '=' *> many a_char))
+aPair :: CharParser () (String, Maybe String)
+aPair = liftA2 (,) (many1 aChar) (optionMaybe (char '=' *> many aChar))
 
-p_char :: CharParser () Char
-p_char = oneOf urlBaseChars       <|>
-         (char '+' >> return ' ') <|>
-         p_hex
+pChar :: CharParser () Char
+pChar = oneOf urlBaseChars <|> (char '+' >> return ' ') <|> pHex
 
-a_char :: CharParser () Char
-a_char = oneOf urlBaseChars <|>
-         (' ' <$ char '+')  <|>
-         a_hex
+aChar :: CharParser () Char
+aChar = oneOf urlBaseChars <|> (' ' <$ char '+') <|> aHex
 
 urlBaseChars :: String
 urlBaseChars = ['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9'] ++ "$-_.!*'(),"
 
-p_hex :: CharParser () Char
-p_hex = do
-  _ <- char '%'
-  a <- hexDigit
-  b <- hexDigit
-  let ((d, _):_) = readHex [a, b]
-  return . toEnum $ d
+pHex :: CharParser () Char
+pHex = do _ <- char '%'
+          a <- hexDigit
+          b <- hexDigit
+          let ((d, _):_) = readHex [a, b]
+          return . toEnum $ d
 
-a_hex :: CharParser () Char
-a_hex = hexify <$> (char '%' *> hexDigit) <*> hexDigit
+aHex :: CharParser () Char
+aHex = hexify <$> (char '%' *> hexDigit) <*> hexDigit
 
 hexify :: Char -> Char -> Char
 hexify a b = toEnum . fst . head . readHex $ [a, b]
