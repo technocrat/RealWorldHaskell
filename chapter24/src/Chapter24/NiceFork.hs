@@ -15,12 +15,12 @@ import           Data.Map           (Map)
 import qualified Data.Map           as M
 
 data ThreadStatus = Running
-                  | Finished          -- terminated normally
-                  | Threw IOException -- killed by uncaught exception
-                    deriving (Eq, Show)
+                  | Finished           -- terminated normally
+                  | Threw IOException  -- killed by uncaught exception
+                  deriving (Eq, Show)
 
 newtype ThreadManager = Mgr (MVar (Map ThreadId (MVar ThreadStatus)))
-    deriving Eq
+                      deriving Eq
 
 -- | Create a new thread manager.
 newManager :: IO ThreadManager
@@ -28,22 +28,20 @@ newManager = Mgr `fmap` newMVar M.empty
 
 -- | Create a new managed thread.
 forkManaged :: ThreadManager -> IO () -> IO ThreadId
-forkManaged (Mgr mgr) body =
-    modifyMVar mgr $ \m -> do
-      state <- newEmptyMVar
-      tid <- forkIO $ do result <- try body
-                         putMVar state (either Threw (const Finished) result)
-      return (M.insert tid state m, tid)
+forkManaged (Mgr mgr) body = modifyMVar mgr $ \m -> do
+  state <- newEmptyMVar
+  tid <- forkIO $ do result <- try body
+                     putMVar state (either Threw (const Finished) result)
+  return (M.insert tid state m, tid)
 
 -- | Immediately return the status of a managed thread.
 getStatus :: ThreadManager -> ThreadId -> IO (Maybe ThreadStatus)
-getStatus (Mgr mgr) tid =
-    modifyMVar mgr $ \m ->
-        case M.lookup tid m of
-          Nothing -> return (m, Nothing)
-          Just st -> tryTakeMVar st >>= \mst ->
-                     case mst of Nothing  -> return (m, Just Running)
-                                 Just sth -> return (M.delete tid m, Just sth)
+getStatus (Mgr mgr) tid = modifyMVar mgr $ \m ->
+  case M.lookup tid m of
+   Nothing -> return (m, Nothing)
+   Just st -> tryTakeMVar st >>= \mst ->
+     return $ case mst of Nothing  -> (m, Just Running)
+                          Just sth -> (M.delete tid m, Just sth)
 
 -- | Block until a specific managed thread terminates.
 waitFor :: ThreadManager -> ThreadId -> IO (Maybe ThreadStatus)
@@ -65,4 +63,4 @@ waitFor (Mgr mgr) tid = join . modifyMVar mgr $ \m -> return $
 -- | Block until all managed threads terminate.
 waitAll :: ThreadManager -> IO ()
 waitAll (Mgr mgr) = modifyMVar mgr elems >>= mapM_ takeMVar
-    where elems m = return (M.empty, M.elems m)
+  where elems m = return (M.empty, M.elems m)
